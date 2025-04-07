@@ -25,51 +25,52 @@
             
             // Obtener el índice del idioma seleccionado
             $indiceIdioma = $idiomaSeleccionado !== null ? array_search($idiomaSeleccionado, $idiomas) : false;
-            ?>
 
+            function mostrarAlumnos($idiomaSeleccionado, $indiceIdioma, $niveles, $idiomas, $alumnos) {
+                echo '<form method="GET" action="">';
+                echo '<div class="row">';
+                    echo '<div class="col-md-8 mx-auto">';
+                        echo '<select class="form-select" name="idioma" onchange="this.form.submit()">';
+                            echo '<option value="">Seleccione un idioma</option>';
+                            foreach ($idiomas as $idioma) {
+                                $selected = ($idiomaSeleccionado === $idioma) ? 'selected' : '';
+                                echo "<option value=\"$idioma\" $selected>$idioma</option>";
+                            }
+                        echo '</select>';
+                    echo '</div>';
+                echo '</div>';
+            echo '</form>';
+            echo '<div class="tabla-alumnos mt-4">';
+                if ($idiomaSeleccionado && $indiceIdioma !== false){
+                    echo "<h4 class=\"text-center mb-3\">Alumnos en $idiomaSeleccionado </h4>";
+                    echo '<table class="table table-bordered table-striped">';
+                        echo '<thead class="table-dark">';
+                            echo '<tr>';
+                                echo '<th>Nivel</th>';
+                                echo '<th>Alumnos</th>';
+                            echo '</tr>';
+                        echo '</thead>';
+                        echo '<tbody>';
+                            foreach ($alumnos as $nivel => $datosIdiomas){
+                                echo '<tr>';
+                                    echo "<td>$nivel</td>";
+                                    echo "<td> $datosIdiomas[$indiceIdioma]</td>";
+                                echo '</tr>';
+                            }
+                        echo '</tbody>';
+                    echo '</table>';
+                }else{
+                    echo '<div class="alert alert-info text-center">';
+                        echo 'Seleccione un idioma del menú desplegable para ver los alumnos por nivel';
+                    echo '</div>';
+                }
+            echo '</div>';
+            }
+            ?>
             <div class="card shadow">
                 <div class="card-body">
                     <h3 class="card-title text-center mb-4">Seleccione un idioma</h3>
-                    
-                    <form method="GET" action="">
-                        <div class="row">
-                            <div class="col-md-8 mx-auto">
-                                <select class="form-select" name="idioma" onchange="this.form.submit()">
-                                    <option value="">Seleccione un idioma</option>
-                                    <?php foreach ($idiomas as $key => $idioma): ?>
-                                        <option value="<?= $idioma ?>" <?= ($idiomaSeleccionado === $idioma) ? 'selected' : '' ?>>
-                                            <?= $idioma ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                    </form>
-                    <div class="tabla-alumnos mt-4">
-                        <?php if ($idiomaSeleccionado && $indiceIdioma !== false): ?>
-                            <h4 class="text-center mb-3">Alumnos en <?= $idiomaSeleccionado ?></h4>
-                            <table class="table table-bordered table-striped">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th>Nivel</th>
-                                        <th>Alumnos</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($alumnos as $nivel => $datosIdiomas): ?>
-                                        <tr>
-                                            <td><?= $nivel ?></td>
-                                            <td><?= $datosIdiomas[$indiceIdioma] ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        <?php else: ?>
-                            <div class="alert alert-info text-center">
-                                Seleccione un idioma del menú desplegable para ver los alumnos por nivel
-                            </div>
-                        <?php endif; ?>
-                    </div>
+                    <?php mostrarAlumnos($idiomaSeleccionado, $indiceIdioma, $niveles, $idiomas, $alumnos); ?>
                 </div>
             </div>
         </div>
